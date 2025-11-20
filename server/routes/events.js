@@ -1,13 +1,36 @@
-// server/routes/events.js
 const express = require("express");
-const router = express.Router();
-const { createEvent, getEvents } = require("../controllers/eventsController");
-const auth = require("../middleware/authMiddleware");
+const jwt = require("jsonwebtoken"); // ✅ keep it here
+const {
+  getEvents,
+  getEventById,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+} = require("../controllers/eventsController");
 
-// protect all /api/events routes with auth
+const router = express.Router();
+
+// JWT middleware here
+function auth(req, res, next) {
+  const authz = req.headers.authorization || "";
+  const token = authz.startsWith("Bearer ") ? authz.slice(7) : null;
+  if (!token) return res.status(401).json({ message: "Missing token" });
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = { userId: payload.userId };
+    next();
+  } catch {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+}
+
 router.use(auth);
 
-router.get("/", getEvents);   // GET /api/events
-router.post("/", createEvent); // POST /api/events
+// Mount the controllers
+router.get("/", getEvents);
+router.get("/:id", getEventById);
+router.post("/", createEvent);
+router.put("/:id", updateEvent);
+router.delete("/:id", deleteEvent);
 
 module.exports = router;

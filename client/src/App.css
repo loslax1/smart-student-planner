@@ -1,0 +1,736 @@
+/* =============== Base Layout =============== */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  /* light, happy background */
+  background: #e5edf7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #0f172a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+/* =============== Header =============== */
+.app-header {
+  background: linear-gradient(120deg, #06297c, #2563eb);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(6, 49, 147, 0.5);
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+  color: #e5e7eb;
+}
+
+.app-header p {
+  color: #d1d5db;
+}
+
+/* Nav links (header menu) */
+.nav-links {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* Make Dashboard, Classes, Profile, Logout look identical */
+.nav-links a,
+.nav-links .linklike {
+  color: #e0f2fe;
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-links a:visited {
+  color: #e0f2fe;
+}
+
+.nav-links a:hover,
+.nav-links .linklike:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+/* =============== Main (Centered Container) =============== */
+.app-main {
+  flex: 1;
+  width: min(1100px, 100%);
+  margin-inline: auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =============== Generic Card Style =============== */
+.card {
+  background: #ffffff;
+  border-radius: 0.9rem;
+  padding: 1.5rem;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 14px 32px rgba(148, 163, 184, 0.35);
+  color: #0f172a;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+/* shared hover for all dashboard cards */
+.card:hover,
+.events-section:hover,
+.event-form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(148, 163, 184, 0.4);
+}
+
+.card h2,
+.card h3 {
+  margin-bottom: 0.75rem;
+}
+
+/* Auth cards use the same light style */
+.auth-card {
+  background: #ffffff;
+  border-radius: 0.9rem;
+  padding: 2rem;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 14px 32px rgba(148, 163, 184, 0.35);
+  max-width: 420px;
+  width: 100%;
+}
+
+/* =============== Auth Pages =============== */
+.auth-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem 3rem;
+}
+
+.auth-card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.auth-subtitle {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.auth-form input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5f5;
+  background: #f9fafb;
+  color: #111827;
+}
+
+.auth-form input:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}
+
+.auth-button {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 0.6rem;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-button:hover {
+  background: #2563eb;
+}
+
+.auth-error {
+  background: rgba(220, 38, 38, 0.11);
+  color: #7f1d1d;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #fecaca;
+}
+
+.auth-footer {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.auth-footer a {
+  color: #2563eb;
+}
+
+/* =============== Dashboard Layout =============== */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.dashboard-heading {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* top hero grid: stats + classes */
+.dashboard-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* main grid: form + sections */
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 1.75rem;
+  align-items: flex-start;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 900px) {
+  .dashboard-top,
+  .dashboard-main-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Center the event form and events list widths at large sizes */
+.event-card,
+.events-list,
+.dashboard-stats,
+.classes-widget {
+  width: 100%;
+}
+
+/* =============== Buttons (global styles for dashboard) =============== */
+
+.btn-primary,
+.btn-secondary,
+.btn-danger,
+.btn-ghost {
+  border-radius: 999px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 120ms ease, box-shadow 120ms ease,
+    transform 120ms ease, color 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #111827;
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background: #020617;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-danger:hover {
+  background: #fecaca;
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+}
+
+.btn-ghost:hover {
+  background: #f3f4f6;
+}
+
+/* extra layout for actions */
+.event-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+@media (max-width: 700px) {
+  .event-actions {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+  }
+}
+
+/* =============== Event Form =============== */
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.9rem;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 14px 32px rgba(148, 163, 184, 0.35);
+}
+
+/* Make the description box auto-grow (no corner handle) */
+.event-form textarea {
+  resize: none;
+  overflow: hidden;
+}
+
+.event-form input,
+.event-form textarea,
+.event-form select {
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5f5;
+  background: #f9fafb;
+  color: #111827;
+}
+
+.event-form input:focus,
+.event-form textarea:focus,
+.event-form select:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}
+
+.event-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* =============== Event List & Sections =============== */
+
+.events-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Each section becomes its own card */
+.events-section {
+  background: #ffffff;
+  border-radius: 0.9rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 12px 30px rgba(148, 163, 184, 0.35);
+}
+
+.events-section h3 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.05rem;
+}
+
+.events-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.events-section li {
+  margin-bottom: 0.9rem;
+}
+
+.events-section li:last-child {
+  margin-bottom: 0;
+}
+
+/* =============== Event Rows & Priority Badges =============== */
+
+.event-item {
+  position: relative;
+  padding-left: 1rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  border-left: 3px solid rgba(148, 163, 184, 0.7); /* neutral default */
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-item::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 0.9rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #60a5fa;
+}
+
+.event-main {
+  flex: 1;
+}
+
+.event-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.2rem;
+}
+
+.event-badge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(148, 163, 184, 0.15);
+  color: #374151;
+}
+
+/* Date range - keep on one line if possible but allow wrapping */
+.event-dates-inline {
+  margin-top: 0.25rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: normal;
+}
+
+/* Description under event */
+.event-desc {
+  margin-top: 0.25rem;
+  color: #4b5563;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* TODAY - warm yellow */
+.event-item.status-today {
+  border-left-color: #facc15;
+}
+.event-item.status-today::before {
+  background: #facc15;
+}
+.event-badge.status-today {
+  background: rgba(250, 204, 21, 0.16);
+  border-color: #facc15;
+  color: #92400e;
+}
+
+/* ONGOING - bright blue */
+.event-item.status-ongoing {
+  border-left-color: #38bdf8;
+}
+.event-item.status-ongoing::before {
+  background: #38bdf8;
+}
+.event-badge.status-ongoing {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: #38bdf8;
+  color: #075985;
+}
+
+/* COMING UP - fresh green */
+.event-item.status-coming {
+  border-left-color: #22c55e;
+}
+.event-item.status-coming::before {
+  background: #22c55e;
+}
+.event-badge.status-coming {
+  background: rgba(34, 197, 94, 0.16);
+  border-color: #22c55e;
+  color: #166534;
+}
+
+/* OVERDUE - soft red */
+.event-item.status-overdue {
+  border-left-color: #f97373;
+}
+.event-item.status-overdue::before {
+  background: #f97373;
+}
+.event-badge.status-overdue {
+  background: rgba(248, 113, 113, 0.16);
+  border-color: #f97373;
+  color: #7f1d1d;
+}
+
+/* Just in case you still use week/future anywhere */
+.event-item.status-week {
+  border-left-color: #3b82f6;
+}
+.event-badge.status-week {
+  background: rgba(59, 130, 246, 0.16);
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+
+.event-item.status-future {
+  border-left-color: #64748b;
+}
+.event-badge.status-future {
+  background: rgba(148, 163, 184, 0.2);
+  border-color: #64748b;
+  color: #374151;
+}
+
+/* =============== Utilities =============== */
+.center {
+  margin-inline: auto;
+}
+
+/* ===== Dashboard stats ===== */
+
+.dashboard-stats {
+  background: #ffffff;
+  border-radius: 0.9rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 14px 32px rgba(148, 163, 184, 0.35);
+}
+
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.stat-pill {
+  background: #eff6ff;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* =============== Classes Page =============== */
+
+.classes-page h2 {
+  margin-bottom: 0.3rem;
+}
+
+.classes-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.3fr);
+  gap: 1.5rem;
+}
+
+/* Form side */
+.class-form label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.class-form input {
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5f5;
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Days of week chips */
+.days-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.day-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5f5;
+  background: #f9fafb;
+  font-size: 0.8rem;
+  color: #111827;
+}
+
+.day-chip input {
+  margin: 0;
+}
+
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* Saved class list */
+.class-list ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.class-list-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.class-days {
+  color: #6b7280;
+}
+
+.class-time {
+  color: #4b5563;
+  font-size: 0.85rem;
+}
+
+.class-actions button {
+  margin-left: 0.25rem;
+}
+
+/* Today’s classes widget on dashboard */
+.classes-widget {
+  background: #ffffff;
+  border-radius: 0.9rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #dbeafe;
+  box-shadow: 0 12px 30px rgba(148, 163, 184, 0.35);
+}
+
+.classes-today-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0 0;
+}
+
+.classes-today-list li {
+  margin-bottom: 0.5rem;
+}
+
+.classes-today-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* =============== Improved input visibility =============== */
+
+.auth-form input,
+.event-form input,
+.event-form textarea,
+.event-form select,
+.class-form input {
+  border-radius: 0.75rem;
+  border: 1px solid #cbd5f5;
+  background: #f9fafb;
+  color: #111827;
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.08);
+  transition: border-color 120ms ease, box-shadow 120ms ease,
+    background-color 120ms ease, transform 80ms ease;
+}
+
+.auth-form input::placeholder,
+.event-form input::placeholder,
+.event-form textarea::placeholder,
+.class-form input::placeholder {
+  color: #94a3b8;
+}
+
+/* hover state */
+.auth-form input:hover,
+.event-form input:hover,
+.event-form textarea:hover,
+.event-form select:hover,
+.class-form input:hover {
+  background: #ffffff;
+  border-color: #bfdbfe;
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.22);
+}
+
+/* focus state */
+.auth-form input:focus,
+.event-form input:focus,
+.event-form textarea:focus,
+.event-form select:focus,
+.class-form input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  transform: translateY(-0.5px);
+}

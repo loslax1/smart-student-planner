@@ -1,7 +1,7 @@
 // server/config/db.js
 const { Pool } = require("pg");
 
-// Only load .env in local/dev, NOT in Docker
+// Only load .env locally; Docker already injects env
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -10,14 +10,9 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// test connection on startup
 pool
   .connect()
-  .then(() => {
-    console.log("✅ Connected to PostgreSQL");
-  })
-  .catch((err) => {
-    console.error("❌ Database connection error:", err.message);
-  });
+  .then(() => console.log("✅ Connected to PostgreSQL"))
+  .catch((err) => console.error("❌ Database connection error:", err.message));
 
-module.exports = pool;
+module.exports = { pool }; // ✅ matches const { pool } = require("./config/db")
