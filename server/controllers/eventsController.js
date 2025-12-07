@@ -30,12 +30,22 @@ function validateEvent(body) {
   return { ok: true };
 }
 
-/** GET /api/events — list all events for the authenticated user */
+/** GET /api/events  list all events for the authenticated user */
 exports.getEvents = async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const { rows } = await pool.query(
-      `SELECT id, user_id, title, description, type, start_time, end_time, course_name, created_at
+      `SELECT
+         id,
+         user_id,
+         title,
+         description,
+         type,
+         start_time,
+         end_time,
+         course_name,
+         completed,
+         created_at
        FROM events
        WHERE user_id = $1
        ORDER BY start_time ASC`,
@@ -54,7 +64,17 @@ exports.getEventById = async (req, res, next) => {
     const userId = req.user.userId;
     const { id } = req.params;
     const { rows } = await pool.query(
-      `SELECT id, user_id, title, description, type, start_time, end_time, course_name, created_at
+      `SELECT
+         id,
+         user_id,
+         title,
+         description,
+         type,
+         start_time,
+         end_time,
+         course_name,
+         completed,
+         created_at
        FROM events
        WHERE id = $1 AND user_id = $2`,
       [id, userId]
@@ -67,7 +87,7 @@ exports.getEventById = async (req, res, next) => {
   }
 };
 
-/** POST /api/events — create a new event and return the created row */
+/** POST /api/events  create a new event and return the created row */
 exports.createEvent = async (req, res, next) => {
   try {
     const userId = req.user.userId;
@@ -78,26 +98,37 @@ exports.createEvent = async (req, res, next) => {
     const { title, description, type, start_time, end_time, course_name } = req.body;
 
     const { rows } = await pool.query(
-      `INSERT INTO events (user_id, title, description, type, start_time, end_time, course_name)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       RETURNING id, user_id, title, description, type, start_time, end_time, course_name, created_at`,
+      `INSERT INTO events
+         (user_id, title, description, type, start_time, end_time, course_name, completed)
+       VALUES
+         ($1, $2, $3, $4, $5, $6, $7, false)
+       RETURNING
+         id,
+         user_id,
+         title,
+         description,
+         type,
+         start_time,
+         end_time,
+         course_name,
+         completed,
+         created_at`,
       [userId, title, description || null, type, start_time, end_time, course_name || null]
     );
 
-    res.status(201).json(rows[0]); // ✅ return created event for instant UI update
+    res.status(201).json(rows[0]);
   } catch (err) {
     console.error("Create event error:", err.message);
     next(err);
   }
 };
 
-/** PUT /api/events/:id — simple full-update */
+/** PUT /api/events/:id  simple full update */
 exports.updateEvent = async (req, res, next) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
 
-    // Require full payload for simplicity
     const v = validateEvent({ ...req.body });
     if (!v.ok) return res.status(400).json({ message: v.message });
 
@@ -112,7 +143,17 @@ exports.updateEvent = async (req, res, next) => {
              end_time = $5,
              course_name = $6
        WHERE id = $7 AND user_id = $8
-       RETURNING id, user_id, title, description, type, start_time, end_time, course_name, created_at`,
+       RETURNING
+         id,
+         user_id,
+         title,
+         description,
+         type,
+         start_time,
+         end_time,
+         course_name,
+         completed,
+         created_at`,
       [title, description || null, type, start_time, end_time, course_name || null, id, userId]
     );
 
@@ -140,5 +181,40 @@ exports.deleteEvent = async (req, res, next) => {
   } catch (err) {
     console.error("Delete event error:", err.message);
     next(err);
+  }
+};
+
+// PATCH  toggle completed on an event
+exports.toggleCompleted = async (req, res) => {
+  const { id } = req.params;
+  const { completed } = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE events
+       SET completed = $1
+       WHERE id = $2 AND user_id = $3
+       RETURNING
+         id,
+         user_id,
+         title,
+         description,
+         type,
+         start_time,
+         end_time,
+         course_name,
+         completed,
+         created_at`,
+      [completed, id, req.user.userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error("Error updating completed:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };

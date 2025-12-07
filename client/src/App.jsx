@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Classes from "./pages/Classes";
+import Events from "./pages/Events";
 
 export default function App() {
   const [isAuthed, setIsAuthed] = useState(!!localStorage.getItem("token"));
@@ -54,6 +55,8 @@ export default function App() {
               <span>·</span>
               <Link to="/classes">Classes</Link>
               <span>·</span>
+              <Link to="/events">Events</Link>
+              <span>·</span>
               <Link to="/profile">Profile</Link>
               <span>·</span>
               <button onClick={logout} className="linklike">
@@ -79,6 +82,10 @@ export default function App() {
           <Route
             path="/classes"
             element={isAuthed ? <Classes /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/events"
+            element={isAuthed ? <Events /> : <Navigate to="/login" />}
           />
           <Route
             path="/profile"

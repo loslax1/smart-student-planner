@@ -1,4 +1,3 @@
-// client/src/pages/Classes.jsx
 import { useEffect, useState, useRef } from "react";
 import api from "../api/apiClient";
 
@@ -20,7 +19,7 @@ function formatTime(t) {
 
 function formatDate(d) {
   if (!d) return "";
-  // d might be "2025-11-20T00:00:00.000Z" – just use the date part
+  // d might be "2025-11-20T00:00:00.000Z" just use the date part
   return new Date(d).toLocaleDateString();
 }
 
@@ -112,10 +111,8 @@ export default function Classes() {
         course_name: form.course_name,
         location: form.location || null,
         days_of_week: form.days_of_week,
-        // dates already come as "YYYY-MM-DD" from <input type="date">
         start_date: form.start_date,
         end_date: form.end_date,
-        // times already "HH:MM" from <input type="time">
         class_start_time: form.class_start_time,
         class_end_time: form.class_end_time,
       };
@@ -154,10 +151,8 @@ export default function Classes() {
       course_name: cls.course_name || "",
       location: cls.location || "",
       days_of_week: cls.days_of_week || [],
-      // strip to "YYYY-MM-DD"
       start_date: cls.start_date?.slice(0, 10) || "",
       end_date: cls.end_date?.slice(0, 10) || "",
-      // times come back like "18:30:00" – cut to "18:30"
       class_start_time: (cls.class_start_time || "").slice(0, 5),
       class_end_time: (cls.class_end_time || "").slice(0, 5),
     });
@@ -193,7 +188,12 @@ export default function Classes() {
   return (
     <div className="dashboard">
       <h2>Your Classes</h2>
-      <p style={{ color: "#9ca3af", marginBottom: "1.25rem" }}>
+      <p
+        style={{
+          color: "#9ca3af",
+          margin: "0.15rem 0 1rem",
+        }}
+      >
         Add your class schedule so your dashboard can highlight today&apos;s
         classes.
       </p>
